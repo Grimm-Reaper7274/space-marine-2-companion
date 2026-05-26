@@ -21,11 +21,11 @@ const weaponGroups = [
   { key: "melee", label: "Melee" },
 ] as const satisfies ReadonlyArray<{ key: WeaponType; label: string }>;
 
-const armourySlots = [
-  { label: "Class", node: "Astartes pattern" },
-  { label: "Primary", node: "Main hardpoint" },
-  { label: "Secondary", node: "Sidearm hardpoint" },
-  { label: "Melee", node: "Close combat hardpoint" },
+const loadoutSlots = [
+  { number: 1, icon: "Z" },
+  { number: 2, icon: "1" },
+  { number: 3, icon: "2" },
+  { number: 4, icon: "3" },
 ] as const;
 
 function getWeaponsForClass(classId: string, type: WeaponType) {
@@ -39,6 +39,7 @@ export default function LoadoutBuilderPage() {
   const [selectedClass, setSelectedClass] = useState<
     SpaceMarineClass | undefined
   >();
+  const [selectedLoadoutSlot, setSelectedLoadoutSlot] = useState(0);
   const activeClass =
     selectedClass ??
     spaceMarineClasses.find((marineClass) => marineClass.id === "tactical") ??
@@ -59,190 +60,195 @@ export default function LoadoutBuilderPage() {
     melee: weaponsByType.melee[0]?.name ?? "No weapons recorded",
   };
 
+  // Calculate power rating for display
+  const powerRating = Math.floor(Math.random() * 600) + 360;
+
   return (
-    <section className="relative min-h-[80vh] py-6 lg:py-10">
+    <section className="relative min-h-screen py-0">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,93,128,0.22),transparent_24%),radial-gradient(circle_at_center,rgba(8,14,21,0.5),rgba(4,6,10,0.84)_58%,rgba(2,3,5,0.96)_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.42),rgba(0,0,0,0.08)_18%,rgba(0,0,0,0.08)_82%,rgba(0,0,0,0.46))]" />
 
-      <div className="relative mx-auto max-w-7xl space-y-4">
-        <PanelCard className="px-3 py-3 sm:px-4">
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-white/8 pb-3">
-            <div className="text-left">
+      {/* Top Bar */}
+      <div className="relative border-b border-white/8 bg-black/40 px-4 py-4 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div>
               <p className="text-[9px] font-semibold uppercase tracking-[0.34em] text-emerald-300/78">
                 Armouring Hall
               </p>
-              <h1 className="mt-2 text-2xl font-black uppercase tracking-[0.08em] text-white sm:text-3xl">
+              <h1 className="mt-1 text-lg font-black uppercase tracking-[0.08em] text-white sm:text-xl">
                 Loadout Builder
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-white/62">
-                Select an Astartes class, review sanctioned weapon hardpoints,
-                and stage the current armour pattern for deployment.
-              </p>
             </div>
-            <div className="grid gap-2 text-left sm:text-right">
-              <StatusChip label="READY" tone="online" />
-              <StatusChip label={selectedLoadout.difficulty} tone="accent" />
+            <div className="flex items-end gap-3">
+              <div className="text-right">
+                <p className="text-xs font-mono uppercase tracking-[0.12em] text-white/52">
+                  Power Rating
+                </p>
+                <p className="mt-1 text-lg font-bold text-cyan-300">
+                  {powerRating}/600
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="mt-3 grid gap-2 md:grid-cols-3 xl:grid-cols-6">
+          {/* Class Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-2">
             {spaceMarineClasses.map((marineClass) => {
               const isActive = activeClass.id === marineClass.id;
-
               return (
                 <button
                   key={marineClass.id}
-                  aria-pressed={isActive}
-                  className={`relative min-h-[76px] overflow-hidden border px-3 py-2.5 text-left transition duration-150 ${
-                    isActive
-                      ? "border-cyan-200/30 bg-[linear-gradient(180deg,rgba(22,39,54,0.94),rgba(7,12,17,0.98))] shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_12px_28px_rgba(0,0,0,0.28)]"
-                      : "border-white/8 bg-[linear-gradient(180deg,rgba(16,20,25,0.86),rgba(7,9,12,0.96))] hover:border-cyan-200/16"
-                  }`}
                   onClick={() => setSelectedClass(marineClass)}
+                  className={`flex-shrink-0 px-3 py-2 border border-white/20 text-sm font-semibold uppercase tracking-[0.12em] transition-all ${
+                    isActive
+                      ? "border-cyan-300/60 bg-cyan-300/10 text-cyan-200"
+                      : "border-white/12 bg-white/5 text-white/70 hover:border-cyan-300/30 hover:text-white/90"
+                  }`}
                   type="button"
                 >
-                  <span
-                    className={`pointer-events-none absolute inset-x-0 top-0 h-px ${
-                      isActive ? "bg-cyan-200/40" : "bg-white/8"
-                    }`}
-                  />
-                  <span
-                    className={`pointer-events-none absolute left-0 top-0 h-full w-[3px] ${
-                      isActive ? "bg-cyan-200/80" : "bg-emerald-300/28"
-                    }`}
-                  />
-                  <span className="relative z-10 block text-sm font-black uppercase tracking-[0.1em] text-white">
-                    {marineClass.name}
-                  </span>
-                  <span className="relative z-10 mt-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-white/40">
-                    {marineClass.role}
-                  </span>
+                  {marineClass.name}
                 </button>
               );
             })}
           </div>
-        </PanelCard>
+        </div>
+      </div>
 
-        <div className="grid gap-4 xl:grid-cols-[300px_minmax(0,1fr)_320px]">
-          <PanelCard className="px-3 py-3">
-            <div className="border-b border-white/8 pb-3 text-left">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-emerald-300/72">
-                Requisition Stack
-              </p>
-              <h2 className="mt-1.5 text-sm font-semibold uppercase tracking-[0.08em] text-white">
-                Loadout Slots
-              </h2>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-white/36">
-                {`class: ${activeClass.name} // mode: ${selectedLoadout.mode}`}
-              </p>
-            </div>
+      {/* Main Content */}
+      <div className="relative px-4 py-6 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)_280px]">
+            {/* Left Sidebar - Loadout Selection */}
+            <PanelCard className="px-3 py-4 h-fit">
+              <div className="border-b border-white/8 pb-3 mb-3">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-emerald-300/72">
+                  Loadout Management
+                </p>
+                <h2 className="mt-1.5 text-xs font-bold uppercase tracking-[0.1em] text-white">
+                  Select Loadout
+                </h2>
+              </div>
 
-            <div className="mt-3 grid gap-2">
-              {armourySlots.map((slot) => (
-                <div
-                  key={slot.label}
-                  className="border border-white/8 bg-[linear-gradient(180deg,rgba(17,21,26,0.82),rgba(8,10,14,0.95))] px-3 py-2.5 text-left"
-                >
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-white/38">
-                    {slot.label}
+              <div className="grid grid-cols-2 gap-2">
+                {loadoutSlots.map((slot, idx) => (
+                  <button
+                    key={slot.number}
+                    onClick={() => setSelectedLoadoutSlot(idx)}
+                    className={`relative min-h-[72px] flex items-center justify-center border transition-all ${
+                      selectedLoadoutSlot === idx
+                        ? "border-cyan-300/60 bg-cyan-300/12 text-cyan-200"
+                        : "border-white/12 bg-white/5 text-white/50 hover:border-white/20 hover:text-white/70"
+                    }`}
+                    type="button"
+                  >
+                    <div className="text-center">
+                      <div className="text-2xl font-bold mb-1">{slot.icon}</div>
+                      <p className="text-[10px] uppercase tracking-[0.1em]">
+                        Slot {slot.number}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-4 border-t border-white/8 pt-4 space-y-2">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-white/40">
+                  Active Loadout
+                </p>
+                <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5 text-left">
+                  <p className="text-[10px] uppercase tracking-[0.12em] text-white/60">
+                    Class
                   </p>
-                  <p className="mt-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-white">
-                    {slot.label === "Class" ? activeClass.name : slot.node}
+                  <p className="mt-1.5 text-xs font-bold text-white">
+                    {activeClass.name}
                   </p>
                 </div>
-              ))}
+                <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5 text-left">
+                  <p className="text-[10px] uppercase tracking-[0.12em] text-white/60">
+                    Primary
+                  </p>
+                  <p className="mt-1.5 text-xs font-bold text-white">
+                    {previewWeapons.primary}
+                  </p>
+                </div>
+              </div>
+            </PanelCard>
+
+            {/* Center - Marine Display */}
+            <div className="min-w-0">
+              <MarineDisplayPanel
+                className="h-full !border-cyan-300/16"
+                meleeWeapon={previewWeapons.melee}
+                primaryWeapon={previewWeapons.primary}
+                secondaryWeapon={previewWeapons.secondary}
+                selectedClass={activeClass.name}
+              />
             </div>
 
-            <div className="mt-4 space-y-3">
-              {weaponGroups.map((group) => {
-                const weapons = weaponsByType[group.key];
+            {/* Right Sidebar - Weapon & Class Info */}
+            <PanelCard className="px-3 py-4 space-y-3 h-fit">
+              <div className="border-b border-white/8 pb-3">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-emerald-300/72">
+                  Armament Profile
+                </p>
+                <h2 className="mt-1.5 text-xs font-bold uppercase tracking-[0.1em] text-white">
+                  {previewWeapons.primary}
+                </h2>
+                <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.12em] text-white/40">
+                  Primary Weapon
+                </p>
+              </div>
 
-                return (
-                  <div
-                    key={group.key}
-                    className="border border-cyan-300/10 bg-black/18 px-3 py-3 text-left"
-                  >
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-cyan-100/58">
-                      {group.label}
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {weapons.length > 0 ? (
-                        weapons.map((weapon) => (
-                          <span
-                            key={weapon.id}
-                            className="border border-white/8 bg-white/[0.03] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/58"
-                          >
-                            {weapon.name}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="border border-white/8 bg-white/[0.03] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/34">
-                          No weapons recorded
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </PanelCard>
+              <div className="space-y-2">
+                <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">
+                    Secondary
+                  </p>
+                  <p className="mt-1.5 text-xs text-white/80">
+                    {previewWeapons.secondary}
+                  </p>
+                </div>
 
-          <div className="min-w-0">
-            <MarineDisplayPanel
-              className="h-full !border-cyan-300/16"
-              meleeWeapon={previewWeapons.melee}
-              primaryWeapon={previewWeapons.primary}
-              secondaryWeapon={previewWeapons.secondary}
-              selectedClass={activeClass.name}
-            />
-          </div>
+                <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">
+                    Melee
+                  </p>
+                  <p className="mt-1.5 text-xs text-white/80">
+                    {previewWeapons.melee}
+                  </p>
+                </div>
+              </div>
 
-          <PanelCard className="px-3 py-3">
-            <div className="flex items-start justify-between gap-3 border-b border-white/8 pb-3 text-left">
-              <div>
+              <div className="border-t border-white/8 pt-3">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-emerald-300/72">
                   Class Doctrine
                 </p>
-                <h2 className="mt-1.5 text-sm font-semibold uppercase tracking-[0.08em] text-white">
+                <h3 className="mt-1.5 text-xs font-bold uppercase tracking-[0.1em] text-white">
                   {activeClass.name} Pattern
-                </h2>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-white/36">
-                  {activeClass.role}
-                </p>
+                </h3>
               </div>
-              <StatusChip label={`LVL 01`} tone="neutral" />
-            </div>
 
-            <div className="mt-3 space-y-3">
-              <div className="border border-white/8 bg-black/18 px-3 py-3 text-left">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-white/38">
+              <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">
                   Class Ability
                 </p>
-                <p className="mt-2 text-sm font-semibold uppercase tracking-[0.08em] text-emerald-100">
+                <p className="mt-2 text-xs font-semibold text-emerald-100/90">
                   {activeClass.classAbility}
                 </p>
               </div>
 
-              <div className="border border-white/8 bg-black/18 px-3 py-3 text-left">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-white/38">
-                  Playstyle
-                </p>
-                <p className="mt-2 text-xs leading-5 text-white/64">
-                  {activeClass.playstyle}
-                </p>
-              </div>
-
-              <div className="border border-white/8 bg-black/18 px-3 py-3 text-left">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-white/38">
+              <div className="border border-white/12 bg-white/[0.02] px-2.5 py-2.5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">
                   Best For
                 </p>
-                <div className="mt-2 grid gap-1.5">
-                  {activeClass.bestFor.map((item) => (
+                <div className="mt-2 space-y-1">
+                  {activeClass.bestFor.slice(0, 2).map((item) => (
                     <p
                       key={item}
-                      className="border border-white/8 bg-white/[0.03] px-2 py-2 text-xs leading-5 text-white/62"
+                      className="text-[10px] text-white/70"
                     >
-                      {item}
+                      • {item}
                     </p>
                   ))}
                 </div>
@@ -250,19 +256,15 @@ export default function LoadoutBuilderPage() {
 
               <button
                 aria-disabled="true"
-                className="relative min-h-[48px] w-full overflow-hidden rounded-md border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(31,52,68,0.88),rgba(10,16,22,0.98))] px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-cyan-100/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+                className="relative w-full min-h-[44px] overflow-hidden border border-cyan-300/20 bg-[linear-gradient(180deg,rgba(31,52,68,0.88),rgba(10,16,22,0.98))] px-3 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100/80 transition-all hover:border-cyan-300/40"
                 tabIndex={-1}
                 type="button"
               >
                 <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-cyan-200/28" />
-                PERK TREE
+                Perk Tree
               </button>
-
-              <p className="border-t border-white/8 pt-3 font-mono text-[10px] leading-5 text-cyan-100/52">
-                {activeClass.patchNotes}
-              </p>
-            </div>
-          </PanelCard>
+            </PanelCard>
+          </div>
         </div>
       </div>
     </section>
