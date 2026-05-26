@@ -6,6 +6,7 @@ import StatusChip from "../../components/loadout/StatusChip";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import SecondaryButton from "../../components/ui/SecondaryButton";
 import PanelCard from "../../components/ui/PanelCard";
+import ClassGrid from "../../features/classes/ClassGrid";
 
 const selectedLoadout = {
   selectedClass: "Tactical",
@@ -294,6 +295,17 @@ export default function LoadoutBuilderPage() {
                 secondaryWeapon={selectedLoadout.secondaryWeapon}
                 selectedClass={selectedLoadout.selectedClass}
               />
+
+              <LoadoutSection
+                className="!border-white/10"
+                eyebrow="Class Foundation"
+                meta="operations roster // role archive"
+                status="SYNCED"
+                statusTone="online"
+                title="Class Matrix"
+              >
+                <ClassGrid />
+              </LoadoutSection>
 
               <div className="grid gap-3 lg:grid-cols-[1.05fr_0.95fr]">
                 <LoadoutSection
