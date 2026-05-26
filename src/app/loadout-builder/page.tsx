@@ -65,15 +65,15 @@ export default function LoadoutBuilderPage() {
           borderBottomColor: "rgba(128, 151, 151, 0.25)",
         }}
       >
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between gap-8 mb-4">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
+          <div className="flex flex-col items-start gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
             <h1
-              className="text-3xl font-black uppercase tracking-[0.16em]"
+              className="text-2xl font-black uppercase tracking-[0.12em] sm:text-3xl sm:tracking-[0.16em]"
               style={{ color: "#b8a35a" }}
             >
               Armouring Hall
             </h1>
-            <div className="text-right text-xs uppercase tracking-[0.12em]" style={{ color: "#5f6c6b" }}>
+            <div className="text-left text-xs uppercase tracking-[0.12em] sm:text-right" style={{ color: "#5f6c6b" }}>
               <div>BUILD INDEX: PROTOTYPE</div>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function LoadoutBuilderPage() {
                 <button
                   key={marineClass.id}
                   onClick={() => setSelectedClass(marineClass)}
-                  className="flex-shrink-0 px-4 py-2 font-semibold uppercase tracking-[0.1em] text-sm transition-colors relative"
+                  className="flex-shrink-0 px-3 py-2 font-semibold uppercase tracking-[0.08em] text-xs transition-colors relative sm:px-4 sm:text-sm sm:tracking-[0.1em]"
                   style={{
                     backgroundColor: isActive ? "rgba(95, 135, 148, 0.4)" : "transparent",
                     color: isActive ? "#8fb8bd" : "#8c9897",
@@ -108,9 +108,9 @@ export default function LoadoutBuilderPage() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 px-6 py-6">
+      <div className="relative z-10 px-4 py-5 sm:px-6 sm:py-6">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)_340px]">
+          <div className="grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)_340px] lg:gap-5">
             {/* Left Sidebar - Weapon/Loadout Slots */}
             <div
               className="rounded-sm"
@@ -248,9 +248,9 @@ export default function LoadoutBuilderPage() {
             >
               {/* Class Header */}
               <div className="px-4 py-3 border-b" style={{ borderBottomColor: "rgba(128, 151, 151, 0.2)" }}>
-                <div className="flex items-start justify-between gap-2 mb-1">
+                <div className="flex flex-col items-start gap-1 mb-1 sm:flex-row sm:justify-between sm:gap-2">
                   <div>
-                    <p className="text-lg font-bold" style={{ color: "#d8dedc" }}>
+                    <p className="text-base font-bold sm:text-lg" style={{ color: "#d8dedc" }}>
                       CLASS PROFILE // {activeClass.name}
                     </p>
                   </div>
@@ -312,7 +312,7 @@ export default function LoadoutBuilderPage() {
           </div>
 
           {/* Bottom Action Bar */}
-          <div className="mt-6 flex gap-3 justify-center items-center text-xs uppercase tracking-[0.1em]">
+          <div className="mt-6 flex flex-wrap gap-2 justify-center items-center text-xs uppercase tracking-[0.1em] sm:gap-3">
             <button
               type="button"
               className="flex items-center gap-2 px-3 py-2"
