@@ -1,4 +1,5 @@
 import type { SpaceMarineClass } from "../../data/classes";
+import { spaceMarineWeapons } from "../../data/weapons";
 
 type ClassDetailPanelProps = {
   marineClass?: SpaceMarineClass;
@@ -34,6 +35,15 @@ export default function ClassDetailPanel({
       </div>
     );
   }
+
+  const selectedWeapons = spaceMarineWeapons.filter((weapon) =>
+    weapon.usableByClasses.includes(marineClass.id),
+  );
+  const weaponsByType = {
+    primary: selectedWeapons.filter((weapon) => weapon.type === "primary"),
+    secondary: selectedWeapons.filter((weapon) => weapon.type === "secondary"),
+    melee: selectedWeapons.filter((weapon) => weapon.type === "melee"),
+  };
 
   return (
     <div className="relative overflow-hidden border border-cyan-300/12 bg-[linear-gradient(180deg,rgba(15,21,28,0.92),rgba(7,9,13,0.98))] px-3 py-3 text-left">
@@ -98,7 +108,7 @@ export default function ClassDetailPanel({
 
         <div className="grid gap-2 md:grid-cols-3">
           {weaponGroups.map((group) => {
-            const weapons = marineClass.availableWeapons[group.key];
+            const weapons = weaponsByType[group.key];
 
             return (
               <div
@@ -112,10 +122,10 @@ export default function ClassDetailPanel({
                   {weapons.length > 0 ? (
                     weapons.map((weapon) => (
                       <span
-                        key={weapon}
+                        key={weapon.id}
                         className="border border-white/8 bg-white/[0.03] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/56"
                       >
-                        {weapon}
+                        {weapon.name}
                       </span>
                     ))
                   ) : (
