@@ -2,14 +2,38 @@ import type { SpaceMarineClass } from "../../data/classes";
 
 type ClassCardProps = {
   marineClass: SpaceMarineClass;
+  isSelected?: boolean;
+  onSelect?: (marineClass: SpaceMarineClass) => void;
 };
 
-export default function ClassCard({ marineClass }: ClassCardProps) {
+export default function ClassCard({
+  marineClass,
+  isSelected = false,
+  onSelect,
+}: ClassCardProps) {
+  const weaponCount =
+    marineClass.availableWeapons.primary.length +
+    marineClass.availableWeapons.secondary.length +
+    marineClass.availableWeapons.melee.length;
+
   return (
-    <article className="relative overflow-hidden border border-white/8 bg-[linear-gradient(180deg,rgba(16,20,25,0.9),rgba(7,9,12,0.97))] px-3 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+    <button
+      aria-pressed={isSelected}
+      className={`group relative w-full overflow-hidden border px-3 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-150 ${
+        isSelected
+          ? "border-cyan-200/28 bg-[linear-gradient(180deg,rgba(20,35,48,0.94),rgba(7,12,17,0.98))]"
+          : "border-white/8 bg-[linear-gradient(180deg,rgba(16,20,25,0.9),rgba(7,9,12,0.97))] hover:border-cyan-200/16"
+      }`}
+      onClick={() => onSelect?.(marineClass)}
+      type="button"
+    >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-cyan-200/18" />
       <div className="pointer-events-none absolute inset-[1px] border border-white/5" />
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-emerald-300/45" />
+      <div
+        className={`pointer-events-none absolute left-0 top-0 h-full w-[3px] ${
+          isSelected ? "bg-cyan-200/80" : "bg-emerald-300/45"
+        }`}
+      />
 
       <div className="relative z-10 space-y-3">
         <div className="flex items-start justify-between gap-3 border-b border-white/8 pb-2.5">
@@ -42,7 +66,7 @@ export default function ClassCard({ marineClass }: ClassCardProps) {
               Best For
             </p>
             <p className="mt-1 text-xs leading-5 text-white/66">
-              {marineClass.bestFor}
+              {marineClass.bestFor[0]}
             </p>
           </div>
         </div>
@@ -52,14 +76,14 @@ export default function ClassCard({ marineClass }: ClassCardProps) {
             Available Weapons
           </p>
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {marineClass.availableWeapons.map((weapon) => (
-              <span
-                key={weapon}
-                className="border border-white/8 bg-white/[0.03] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/54"
-              >
-                {weapon}
+            <span className="border border-white/8 bg-white/[0.03] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/54">
+              {`${weaponCount} sanctioned weapons`}
+            </span>
+            {isSelected ? (
+              <span className="border border-cyan-300/14 bg-cyan-300/6 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-cyan-100/72">
+                selected
               </span>
-            ))}
+            ) : null}
           </div>
         </div>
 
@@ -67,6 +91,6 @@ export default function ClassCard({ marineClass }: ClassCardProps) {
           {marineClass.patchNotes}
         </p>
       </div>
-    </article>
+    </button>
   );
 }

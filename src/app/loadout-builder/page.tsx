@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import LoadoutSection from "../../components/loadout/LoadoutSection";
 import AnalysisRow from "../../components/loadout/AnalysisRow";
 import MarineDisplayPanel from "../../components/loadout/MarineDisplayPanel";
@@ -7,6 +11,8 @@ import PrimaryButton from "../../components/ui/PrimaryButton";
 import SecondaryButton from "../../components/ui/SecondaryButton";
 import PanelCard from "../../components/ui/PanelCard";
 import ClassGrid from "../../features/classes/ClassGrid";
+import ClassDetailPanel from "../../features/classes/ClassDetailPanel";
+import type { SpaceMarineClass } from "../../data/classes";
 
 const selectedLoadout = {
   selectedClass: "Tactical",
@@ -143,6 +149,9 @@ const roleDirectives = [
 ] as const;
 
 export default function LoadoutBuilderPage() {
+  const [selectedClass, setSelectedClass] = useState<SpaceMarineClass | undefined>();
+  const currentClassName = selectedClass?.name ?? selectedLoadout.selectedClass;
+
   return (
     <section className="relative min-h-[80vh] py-6 lg:py-10">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,93,128,0.22),transparent_22%),radial-gradient(circle_at_center,rgba(8,14,21,0.54),rgba(4,6,10,0.82)_58%,rgba(2,3,5,0.96)_100%)]" />
@@ -260,7 +269,7 @@ export default function LoadoutBuilderPage() {
                     doctrine review only.
                   </p>
                   <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/36">
-                    {`current class: ${selectedLoadout.selectedClass} // doctrine: ${selectedLoadout.doctrine} // node: loadout-core-01`}
+                    {`current class: ${currentClassName} // doctrine: ${selectedLoadout.doctrine} // node: loadout-core-01`}
                   </p>
                 </div>
 
@@ -280,7 +289,9 @@ export default function LoadoutBuilderPage() {
                       {item.label}
                     </p>
                     <p className="mt-1.5 text-sm font-semibold uppercase tracking-[0.08em] text-white">
-                      {item.value}
+                      {item.label === "Selected Class"
+                        ? currentClassName
+                        : item.value}
                     </p>
                     <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-white/36">
                       {item.meta}
@@ -293,7 +304,7 @@ export default function LoadoutBuilderPage() {
                 meleeWeapon={selectedLoadout.meleeWeapon}
                 primaryWeapon={selectedLoadout.primaryWeapon}
                 secondaryWeapon={selectedLoadout.secondaryWeapon}
-                selectedClass={selectedLoadout.selectedClass}
+                selectedClass={currentClassName}
               />
 
               <LoadoutSection
@@ -304,7 +315,11 @@ export default function LoadoutBuilderPage() {
                 statusTone="online"
                 title="Class Matrix"
               >
-                <ClassGrid />
+                <ClassGrid
+                  selectedClassId={selectedClass?.id}
+                  onSelectClass={setSelectedClass}
+                />
+                <ClassDetailPanel marineClass={selectedClass} />
               </LoadoutSection>
 
               <div className="grid gap-3 lg:grid-cols-[1.05fr_0.95fr]">

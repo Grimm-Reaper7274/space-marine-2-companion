@@ -5,8 +5,12 @@ export type SpaceMarineClass = {
   difficulty: string;
   playstyle: string;
   classAbility: string;
-  bestFor: string;
-  availableWeapons: string[];
+  bestFor: string[];
+  availableWeapons: {
+    primary: string[];
+    secondary: string[];
+    melee: string[];
+  };
   patchNotes: string;
 };
 
@@ -19,14 +23,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Controls the center lane with reliable rifle pressure, grenade timing, and fast target marking for squad focus fire.",
     classAbility: "Auspex Scan",
-    bestFor: "Balanced squads that need elite priority damage without losing horde control.",
-    availableWeapons: [
-      "Auto Bolt Rifle",
-      "Bolt Rifle",
-      "Plasma Incinerator",
-      "Bolt Pistol",
-      "Chainsword",
+    bestFor: [
+      "Balanced squads that need elite priority damage.",
+      "Players learning lane control and target marking.",
+      "Operations where horde control and boss pressure both matter.",
     ],
+    availableWeapons: {
+      primary: ["Auto Bolt Rifle", "Bolt Rifle", "Plasma Incinerator"],
+      secondary: ["Bolt Pistol"],
+      melee: ["Chainsword"],
+    },
     patchNotes:
       "Baseline doctrine stable. Best deployed as the reference class for first loadout planning.",
   },
@@ -38,14 +44,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Breaks enemy formations with vertical entry, melee burst windows, and aggressive execution chains.",
     classAbility: "Jump Pack",
-    bestFor: "Players who like committing first, disrupting backlines, and creating space for the squad.",
-    availableWeapons: [
-      "Heavy Bolt Pistol",
-      "Bolt Pistol",
-      "Chainsword",
-      "Thunder Hammer",
-      "Power Fist",
+    bestFor: [
+      "Players who like committing first and disrupting backlines.",
+      "Squads that need fast melee pressure.",
+      "Missions with dangerous ranged threats that must be collapsed quickly.",
     ],
+    availableWeapons: {
+      primary: [],
+      secondary: ["Heavy Bolt Pistol", "Bolt Pistol"],
+      melee: ["Chainsword", "Thunder Hammer", "Power Fist"],
+    },
     patchNotes:
       "Requires disciplined exits after impact. Overextension remains the main operational risk.",
   },
@@ -57,14 +65,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Uses hookline mobility to isolate priority targets, collapse into melee, and reposition before the wave locks down.",
     classAbility: "Grapnel Launcher",
-    bestFor: "Fast pressure players who want elite picks and constant angle changes.",
-    availableWeapons: [
-      "Instigator Bolt Carbine",
-      "Occulus Bolt Carbine",
-      "Bolt Pistol",
-      "Combat Knife",
-      "Chainsword",
+    bestFor: [
+      "Fast pressure players who want elite picks.",
+      "Teams that can cover sudden forward dives.",
+      "Encounters where mobility and target isolation decide the fight.",
     ],
+    availableWeapons: {
+      primary: ["Instigator Bolt Carbine", "Occulus Bolt Carbine"],
+      secondary: ["Bolt Pistol"],
+      melee: ["Combat Knife", "Chainsword"],
+    },
     patchNotes:
       "Strong tempo class when paired with squad covering fire. Benefits from clean target selection.",
   },
@@ -76,14 +86,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Holds contested ground with shield pressure, close-range control, and squad-saving defensive timing.",
     classAbility: "Chapter Banner",
-    bestFor: "Teams that need a durable point holder for revives, objectives, and choke control.",
-    availableWeapons: [
-      "Bolt Pistol",
-      "Plasma Pistol",
-      "Chainsword",
-      "Power Sword",
-      "Storm Shield",
+    bestFor: [
+      "Teams that need a durable point holder.",
+      "Objective defense, revives, and choke control.",
+      "Players who prefer measured melee and squad protection.",
     ],
+    availableWeapons: {
+      primary: [],
+      secondary: ["Bolt Pistol", "Plasma Pistol"],
+      melee: ["Chainsword", "Power Sword", "Storm Shield"],
+    },
     patchNotes:
       "Excellent objective stability. Damage output depends on measured melee openings.",
   },
@@ -95,14 +107,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Deletes priority threats from range, manages cloak windows, and protects the squad before elites reach melee.",
     classAbility: "Camo Cloak",
-    bestFor: "Accurate players who prefer target priority, ranged control, and low exposure.",
-    availableWeapons: [
-      "Bolt Sniper Rifle",
-      "Las Fusil",
-      "Stalker Bolt Rifle",
-      "Bolt Pistol",
-      "Combat Knife",
+    bestFor: [
+      "Accurate players who prefer target priority.",
+      "Elite-heavy waves and ranged threat control.",
+      "Squads that need overwatch without constant frontline exposure.",
     ],
+    availableWeapons: {
+      primary: ["Bolt Sniper Rifle", "Las Fusil", "Stalker Bolt Rifle"],
+      secondary: ["Bolt Pistol"],
+      melee: ["Combat Knife"],
+    },
     patchNotes:
       "Punishes missed shots more than other classes. Maintains high value against elite-heavy waves.",
   },
@@ -114,13 +128,16 @@ export const spaceMarineClasses: SpaceMarineClass[] = [
     playstyle:
       "Locks firing lanes with heavy weapons, sustained horde clear, and defensive stance management.",
     classAbility: "Iron Halo",
-    bestFor: "Squads that need volume fire, boss pressure, and reliable suppression from the backline.",
-    availableWeapons: [
-      "Heavy Bolter",
-      "Heavy Plasma Incinerator",
-      "Multi-Melta",
-      "Bolt Pistol",
+    bestFor: [
+      "Squads that need volume fire and reliable suppression.",
+      "Boss pressure from a protected backline.",
+      "Players who like stance discipline and ammunition management.",
     ],
+    availableWeapons: {
+      primary: ["Heavy Bolter", "Heavy Plasma Incinerator", "Multi-Melta"],
+      secondary: ["Bolt Pistol"],
+      melee: [],
+    },
     patchNotes:
       "Ammunition discipline is essential. Strongest when protected by a stable frontline.",
   },
