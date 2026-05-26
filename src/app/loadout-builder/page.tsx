@@ -74,7 +74,7 @@ export default function LoadoutBuilderPage() {
               Armouring Hall
             </h1>
             <div className="text-right text-xs uppercase tracking-[0.12em]" style={{ color: "#5f6c6b" }}>
-              <div>⊙ 200 Ambrasumente ⊕</div>
+              <div>BUILD INDEX: PROTOTYPE</div>
             </div>
           </div>
 
@@ -251,11 +251,11 @@ export default function LoadoutBuilderPage() {
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <div>
                     <p className="text-lg font-bold" style={{ color: "#d8dedc" }}>
-                      {activeClass.id === "tactical" ? "1" : "2"} {activeClass.name}
+                      CLASS PROFILE // {activeClass.name}
                     </p>
                   </div>
                   <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "#5f6c6b" }}>
-                    0/300
+                    PROGRESSION: NOT TRACKED
                   </p>
                 </div>
               </div>
@@ -284,19 +284,8 @@ export default function LoadoutBuilderPage() {
                 {/* Armor Class Indicator */}
                 <div className="mt-4 pt-4 border-t" style={{ borderTopColor: "rgba(128, 151, 151, 0.2)" }}>
                   <p className="text-[9px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#5f6c6b" }}>
-                    Armour Class
+                    Armour Class: Pending
                   </p>
-                  <div className="flex gap-1">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="flex-1 h-2 rounded-sm"
-                        style={{
-                          backgroundColor: i <= 2 ? "rgba(143, 184, 189, 0.5)" : "rgba(44, 50, 56, 0.6)",
-                        }}
-                      />
-                    ))}
-                  </div>
                 </div>
 
                 {/* Perk Tree Button */}
