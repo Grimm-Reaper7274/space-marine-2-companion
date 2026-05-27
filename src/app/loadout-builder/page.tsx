@@ -47,6 +47,12 @@ export default function LoadoutBuilderPage() {
     melee: weaponsByType.melee[0],
   };
 
+  const weaponSlots = [
+    { id: "primary", weapon: previewWeapons.primary },
+    { id: "secondary", weapon: previewWeapons.secondary },
+    { id: "melee", weapon: previewWeapons.melee },
+  ] as const;
+
   return (
     <section
       className="relative min-h-screen"
@@ -71,16 +77,23 @@ export default function LoadoutBuilderPage() {
               className="text-2xl font-black uppercase tracking-[0.12em] sm:text-3xl sm:tracking-[0.16em]"
               style={{ color: "#b8a35a" }}
             >
-              Armouring Hall
+              ARMOURING HALL
             </h1>
-            <div className="text-left text-xs uppercase tracking-[0.12em] sm:text-right" style={{ color: "#5f6c6b" }}>
+            <div
+              className="rounded-sm border px-3 py-1.5 text-left text-xs font-bold uppercase tracking-[0.12em] sm:text-right"
+              style={{
+                backgroundColor: "rgba(95, 135, 148, 0.18)",
+                borderColor: "rgba(143, 184, 189, 0.45)",
+                color: "#8fb8bd",
+              }}
+            >
               <div>BUILD INDEX: PROTOTYPE</div>
             </div>
           </div>
 
           {/* Class Tabs */}
           <div className="flex gap-2 overflow-x-auto">
-            {spaceMarineClasses.map((marineClass, index) => {
+            {spaceMarineClasses.map((marineClass) => {
               const isActive = activeClass.id === marineClass.id;
               return (
                 <button
@@ -88,18 +101,13 @@ export default function LoadoutBuilderPage() {
                   onClick={() => setSelectedClass(marineClass)}
                   className="flex-shrink-0 px-3 py-2 font-semibold uppercase tracking-[0.08em] text-xs transition-colors relative sm:px-4 sm:text-sm sm:tracking-[0.1em]"
                   style={{
-                    backgroundColor: isActive ? "rgba(95, 135, 148, 0.4)" : "transparent",
-                    color: isActive ? "#8fb8bd" : "#8c9897",
-                    borderTop: isActive ? "2px solid #8fb8bd" : "2px solid transparent",
-                    borderLeft: isActive ? "1px solid rgba(143, 184, 189, 0.4)" : "1px solid rgba(128, 151, 151, 0.2)",
-                    borderRight: isActive ? "1px solid rgba(143, 184, 189, 0.4)" : "1px solid rgba(128, 151, 151, 0.2)",
-                    borderBottom: isActive ? "1px solid rgba(143, 184, 189, 0.3)" : "1px solid rgba(128, 151, 151, 0.15)",
+                    backgroundColor: isActive ? "rgba(64, 86, 96, 0.72)" : "rgba(8, 13, 16, 0.72)",
+                    color: isActive ? "#d8dedc" : "#8c9897",
+                    border: isActive ? "1px solid rgba(143, 184, 189, 0.65)" : "1px solid rgba(128, 151, 151, 0.18)",
                   }}
                   type="button"
                 >
-                  {index === 0 && <span className="absolute left-0.5 top-1 text-[9px]">⬜</span>}
                   <span className="inline-block">{marineClass.name}</span>
-                  {index === 5 && <span className="absolute right-0.5 top-1 text-[9px]">⬜</span>}
                 </button>
               );
             })}
@@ -125,7 +133,7 @@ export default function LoadoutBuilderPage() {
                   className="text-[10px] font-bold uppercase tracking-[0.16em] mb-2"
                   style={{ color: "#b8a35a" }}
                 >
-                  Select Loadout
+                  SELECT LOADOUT
                 </p>
                 <div className="flex gap-1">
                   {loadoutSlots.map((slot, idx) => (
@@ -134,10 +142,10 @@ export default function LoadoutBuilderPage() {
                       onClick={() => setSelectedLoadoutSlot(idx)}
                       className="w-8 h-8 flex items-center justify-center text-xs font-bold uppercase tracking-[0.08em] transition-all rounded-sm"
                       style={{
-                        backgroundColor: selectedLoadoutSlot === idx ? "rgba(143, 184, 189, 0.25)" : "rgba(44, 50, 56, 0.6)",
-                        borderColor: selectedLoadoutSlot === idx ? "rgba(143, 184, 189, 0.5)" : "rgba(128, 151, 151, 0.2)",
+                        backgroundColor: selectedLoadoutSlot === idx ? "rgba(184, 163, 90, 0.18)" : "rgba(44, 50, 56, 0.6)",
+                        borderColor: selectedLoadoutSlot === idx ? "rgba(184, 163, 90, 0.5)" : "rgba(128, 151, 151, 0.2)",
                         borderWidth: "1px",
-                        color: selectedLoadoutSlot === idx ? "#8fb8bd" : "#5f6c6b",
+                        color: selectedLoadoutSlot === idx ? "#d8dedc" : "#5f6c6b",
                       }}
                       type="button"
                     >
@@ -149,87 +157,77 @@ export default function LoadoutBuilderPage() {
 
               {/* Weapon Slots */}
               <div className="px-4 py-3 space-y-3">
-                <div>
-                  <p
-                    className="text-[9px] font-bold uppercase tracking-[0.14em] mb-2"
-                    style={{ color: "#b8a35a" }}
-                  >
-                    Standard-Issue
-                  </p>
-                  <div
-                    className="p-3 rounded-sm"
-                    style={{
-                      backgroundColor: "rgba(8, 13, 16, 0.8)",
-                      borderColor: "rgba(128, 151, 151, 0.2)",
-                      borderWidth: "1px",
-                      minHeight: "80px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <p className="text-[11px] text-center uppercase tracking-[0.08em]" style={{ color: "#8c9897" }}>
-                      {previewWeapons.primary?.name ?? "No weapons recorded"}
-                    </p>
-                  </div>
-                </div>
+                {weaponSlots.map((slot) => {
+                  const hasWeapon = Boolean(slot.weapon);
 
-                <div>
-                  <p
-                    className="text-[9px] font-bold uppercase tracking-[0.14em] mb-2"
-                    style={{ color: "#b8a35a" }}
-                  >
-                    Standard-Issue
-                  </p>
-                  <div
-                    className="p-3 rounded-sm"
-                    style={{
-                      backgroundColor: "rgba(8, 13, 16, 0.8)",
-                      borderColor: "rgba(128, 151, 151, 0.2)",
-                      borderWidth: "1px",
-                      minHeight: "80px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <p className="text-[11px] text-center uppercase tracking-[0.08em]" style={{ color: "#8c9897" }}>
-                      {previewWeapons.secondary?.name ?? "No weapons recorded"}
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <p
-                    className="text-[9px] font-bold uppercase tracking-[0.14em] mb-2"
-                    style={{ color: "#b8a35a" }}
-                  >
-                    Standard-Issue
-                  </p>
-                  <div
-                    className="p-3 rounded-sm"
-                    style={{
-                      backgroundColor: "rgba(8, 13, 16, 0.8)",
-                      borderColor: "rgba(128, 151, 151, 0.2)",
-                      borderWidth: "1px",
-                      minHeight: "80px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <p className="text-[11px] text-center uppercase tracking-[0.08em]" style={{ color: "#8c9897" }}>
-                      {previewWeapons.melee?.name ?? "No weapons recorded"}
-                    </p>
-                  </div>
-                </div>
+                  return (
+                    <div key={slot.id}>
+                      <p
+                        className="text-[9px] font-bold uppercase tracking-[0.14em] mb-2"
+                        style={{ color: hasWeapon ? "#b8a35a" : "#5f6c6b" }}
+                      >
+                        {hasWeapon ? "STANDARD-ISSUE" : "EMPTY SLOT"}
+                      </p>
+                      <div
+                        className="p-3 rounded-sm"
+                        style={{
+                          backgroundColor: "rgba(8, 13, 16, 0.8)",
+                          borderColor: "rgba(128, 151, 151, 0.2)",
+                          borderWidth: "1px",
+                          minHeight: "64px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <p
+                          className="text-[11px] text-center font-semibold uppercase tracking-[0.08em]"
+                          style={{ color: hasWeapon ? "#d8dedc" : "#8c9897" }}
+                        >
+                          {slot.weapon?.name ?? "No weapons recorded"}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             {/* Center - Marine Display */}
             <div className="min-w-0">
+              <style>
+                {`
+                  .marine-display-gold {
+                    border-color: rgba(184, 163, 90, 0.18) !important;
+                  }
+
+                  .marine-display-gold h2,
+                  .marine-display-gold .text-emerald-300\\/72 {
+                    color: #b8a35a !important;
+                  }
+
+                  .marine-display-gold .border-emerald-300\\/35,
+                  .marine-display-gold .border-cyan-200\\/35,
+                  .marine-display-gold .border-cyan-300\\/10,
+                  .marine-display-gold .border-cyan-300\\/14,
+                  .marine-display-gold .border-cyan-300\\/24 {
+                    border-color: rgba(184, 163, 90, 0.45) !important;
+                  }
+
+                  .marine-display-gold [class*="rgba(110,231,183"],
+                  .marine-display-gold [class*="rgba(96,165,250"] {
+                    background-image: linear-gradient(90deg, rgba(184, 163, 90, 0.24), rgba(184, 163, 90, 0)) !important;
+                  }
+
+                  .marine-display-gold [class*="rgba(44,88,130"],
+                  .marine-display-gold [class*="rgba(58,119,173"],
+                  .marine-display-gold [class*="rgba(59,130,246"] {
+                    background-image: radial-gradient(circle at top, rgba(184, 163, 90, 0.18), transparent 32%) !important;
+                  }
+                `}
+              </style>
               <MarineDisplayPanel
-                className="h-full"
+                className="h-full marine-display-gold"
                 meleeWeapon={previewWeapons.melee?.name ?? "No weapons recorded"}
                 primaryWeapon={previewWeapons.primary?.name ?? "No weapons recorded"}
                 secondaryWeapon={previewWeapons.secondary?.name ?? "No weapons recorded"}
@@ -250,11 +248,14 @@ export default function LoadoutBuilderPage() {
               <div className="px-4 py-3 border-b" style={{ borderBottomColor: "rgba(128, 151, 151, 0.2)" }}>
                 <div className="flex flex-col items-start gap-1 mb-1 sm:flex-row sm:justify-between sm:gap-2">
                   <div>
-                    <p className="text-base font-bold sm:text-lg" style={{ color: "#d8dedc" }}>
-                      CLASS PROFILE // {activeClass.name}
+                    <p className="text-[9px] font-bold uppercase tracking-[0.14em] mb-1" style={{ color: "#b8a35a" }}>
+                      CLASS PROFILE
+                    </p>
+                    <p className="text-base font-bold uppercase sm:text-lg" style={{ color: "#d8dedc" }}>
+                      {activeClass.name}
                     </p>
                   </div>
-                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "#5f6c6b" }}>
+                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "#8c9897" }}>
                     PROGRESSION: NOT TRACKED
                   </p>
                 </div>
@@ -283,8 +284,11 @@ export default function LoadoutBuilderPage() {
 
                 {/* Armor Class Indicator */}
                 <div className="mt-4 pt-4 border-t" style={{ borderTopColor: "rgba(128, 151, 151, 0.2)" }}>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#5f6c6b" }}>
-                    Armour Class: Pending
+                  <p className="text-[9px] font-bold uppercase tracking-[0.12em] mb-1" style={{ color: "#b8a35a" }}>
+                    ARMOUR CLASS
+                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "#8c9897" }}>
+                    Pending
                   </p>
                 </div>
 
@@ -293,19 +297,19 @@ export default function LoadoutBuilderPage() {
                   type="button"
                   className="w-full py-3 mt-4 font-bold uppercase tracking-[0.12em] text-sm rounded-sm transition-all"
                   style={{
-                    backgroundColor: "rgba(95, 135, 148, 0.2)",
-                    borderColor: "rgba(143, 184, 189, 0.3)",
+                    backgroundColor: "rgba(44, 50, 56, 0.6)",
+                    borderColor: "rgba(184, 163, 90, 0.35)",
                     borderWidth: "1px",
-                    color: "#8fb8bd",
+                    color: "#b8a35a",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(95, 135, 148, 0.35)";
+                    e.currentTarget.style.backgroundColor = "rgba(184, 163, 90, 0.12)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(95, 135, 148, 0.2)";
+                    e.currentTarget.style.backgroundColor = "rgba(44, 50, 56, 0.6)";
                   }}
                 >
-                  Perk Tree
+                  PERK TREE
                 </button>
               </div>
             </div>
